@@ -17,7 +17,7 @@ class Picker{
   /** Media Picker */
   final imagePicker = ImagePicker();
   showImageChoices({required BuildContext context,required Function(File?) callback,bool crop = false}) async {
-    if(await PermissionHandler().askPermission(media : true,location: true)){
+    if(await PermissionHandler().askPermission(media : true)){
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -94,7 +94,7 @@ class Picker{
         },
       );
     } else{
-      CustomDialog(context).choice(message: "Silahkan Berikan Izin Aplikasi Untuk Mengambil Gambar",onTap: (){
+      CustomDialog(context).message(message: "Silahkan Berikan Izin Aplikasi Untuk Mengambil Gambar",onTap: (){
         showImageChoices(context: context, callback: callback,crop: crop);
       });
     }
