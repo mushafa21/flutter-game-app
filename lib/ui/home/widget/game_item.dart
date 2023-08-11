@@ -16,9 +16,9 @@ class GameItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        Go().move(context: context, target: DetailGameScreen(data: data));
-      },
+      // onTap: (){
+      //   Go().move(context: context, target: DetailGameScreen(data: data));
+      // },
       child: Container(
         padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(

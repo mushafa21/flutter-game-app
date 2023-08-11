@@ -3,6 +3,8 @@ import 'package:flutter_base_project/model/game_model.dart';
 import 'package:flutter_base_project/style/custom_text_style.dart';
 import 'package:flutter_base_project/ui/detail_game/detail_game_cubit.dart';
 import 'package:flutter_base_project/utils/custom_dialog.dart';
+import 'package:flutter_base_project/utils/picker.dart';
+import 'package:flutter_base_project/widget/button_primary.dart';
 import 'package:flutter_base_project/widget/image_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,19 +32,22 @@ class _DetailGameScreenState extends State<DetailGameScreen> {
       child: BlocConsumer<DetailGameCubit, DetailGameState>(
         listener: (context, state) {
           if(state is DetailGameLoading){
-            dialog?.hideDialog();
+            dialog?.dismiss();
             dialog?.showLoading();
           } else if(state is DetailGameSuccess){
-            dialog?.hideDialog();
+            dialog?.dismiss();
             dataGame = state.response;
 
           } else if(state is DetailGameError){
-            dialog?.hideDialog();
+            dialog?.dismiss();
             dialog?.error(message: state.error);
 
           }
         },
         builder: (context, state) {
+
+
+
 
           cubit ??= BlocProvider.of<DetailGameCubit>(context);
           AppBar appBar(){
@@ -69,6 +74,13 @@ class _DetailGameScreenState extends State<DetailGameScreen> {
             );
           }
 
+          Widget buttonDialog(){
+            return ButtonPrimary(click: (){
+              Picker().showImageChoices(context: context, callback: (file){
+              });
+
+            }, teks: "test");
+          }
           Widget viewMain(){
             return RefreshIndicator(
               onRefresh: () {
@@ -81,6 +93,8 @@ class _DetailGameScreenState extends State<DetailGameScreen> {
                   children: [
                     viewImage(),
                     viewData(),
+                    SizedBox(height: 10.h,),
+                    buttonDialog()
 
                   ],
                 ),

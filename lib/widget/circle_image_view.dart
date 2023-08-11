@@ -16,7 +16,7 @@ class CircleImageView extends StatelessWidget {
     return ClipOval(
       child: SizedBox.fromSize(
         size: Size.fromRadius(radius ?? 30), // Image radius
-        child: imageFile != null ?Image.file(imageFile!,fit: BoxFit.cover,) :CachedNetworkImage(imageUrl: url,placeholder: (context,url)=> Center(child: CircularProgressIndicator()), errorWidget: (context,url,error)=> Image.asset(errorFile ?? "asset/images/img_profil_null.jpg"),fit: BoxFit.cover,),
+        child: imageFile != null ?Image.file(imageFile!,fit: BoxFit.cover,) :CachedNetworkImage(imageUrl: url,memCacheHeight: 400,placeholder: (context,url)=> Center(child: CircularProgressIndicator()), errorWidget: (context,url,error)=> Image.asset(errorFile ?? "asset/images/img_profil_null.jpg"),fit: BoxFit.cover,),
       ),
     );
   }

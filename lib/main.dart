@@ -17,6 +17,7 @@ void main() async {
   // } else{
   //   await Firebase.initializeApp();
   // }
+
   /** Initialisasi Sharedpref*/
   SharedPreferences prefs = await SharedPreferences.getInstance();
   app.pref = prefs;
@@ -67,14 +68,14 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    /** Init Screen Util Agar Tampilan Responsif*/
     return ScreenUtilInit(
         minTextAdapt: true,
         splitScreenMode: false,
         useInheritedMediaQuery: true,
+        /** Design Size Bisa Diganti Sesuai Dengan Ukuran Canvas Figma */
         designSize: const Size(375, 812),
       builder: (context, Widget? child) {
         return MaterialApp(
@@ -86,9 +87,8 @@ class MyApp extends StatelessWidget {
               toolbarHeight: 60.h,
               iconTheme: IconThemeData(
                 size: 30.r,
-
                 color: CustomColor.dark,
-              ), // set backbutton color here which will reflect in all screens.
+              ),
             ),
             primaryColor: CustomColor.primary500,
             primarySwatch: Colors.blue,

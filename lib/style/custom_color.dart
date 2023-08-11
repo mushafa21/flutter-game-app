@@ -1,6 +1,9 @@
 import 'dart:ui';
 
 class CustomColor{
+  /**
+   * Untuk Hex Code
+   * # -> 0xFF */
   static const Color primary500 = Color(0xFF3484FF);
   static const Color primary400 = Color(0xFF5D9DFF);
   static const Color primary200 = Color(0xFFAECEFF);

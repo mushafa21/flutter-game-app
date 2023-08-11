@@ -12,10 +12,14 @@ import '../utils/helper.dart';
 class ApiBaseHelper{
   final String _baseUrl = Config.baseApi;
 
+  /** Global Headers */
+
   Map<String, String> headers = {
     "Content-type" : "application/json",
     "Accept" : "application/json",
   };
+
+  /** Global Parameters */
 
   Map<String, dynamic> parameters = {
     "key": Config.apiKey,

@@ -1,6 +1,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_base_project/style/custom_color.dart';
+import 'package:flutter_base_project/style/custom_text_style.dart';
 import 'package:flutter_base_project/widget/button_primary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,7 +12,7 @@ class CustomDialog{
 
   CustomDialog(this.context);
 
-  hideDialog(){
+  dismiss(){
     print("showing = ${isShowing}");
     if(isShowing){
       Navigator.pop(context);
@@ -32,32 +34,80 @@ class CustomDialog{
     });
   }
 
-  success({bool dismissible = false,required String message}) {
+  message({required String message, bool exit = false, Function()? onExit,String? confirmButtonText, bool dismissible = true, Function()? onTap} ) async {
     isShowing = true;
-    print("showing = ${isShowing}");
-    showDialog(
+    await showDialog(
         barrierDismissible: dismissible,
         context: context,
         builder: (BuildContext context) {
-          return MessageDialog(message: message,);
+          return MessageDialog(message: message,onTap: onTap,);
         }).then((value) {
       isShowing = false;
     });
+    if (exit) {
+      Navigator.pop(context);
+    }
+    if(onExit != null){
+      onExit();
+    }
   }
 
 
-  error({bool dismissible = false, required String message}) {
+  choice({required String message, bool exit = false, Function()? onExit,String? confirmButtonText,String? cancelButtonText, bool dismissible = true, Function()? onTap}) async {
     isShowing = true;
-    print("showing = ${isShowing}");
-    showDialog(
+    await showDialog(
         barrierDismissible: dismissible,
         context: context,
         builder: (BuildContext context) {
-          return MessageDialog(message: message);
+          return ChoiceDialog(message: message,onTap: onTap,confirmButtonText: confirmButtonText,cancelButtonText: cancelButtonText,);
         }).then((value) {
       isShowing = false;
     });
+    if (exit) {
+      Navigator.pop(context);
+    }
+    if(onExit != null){
+      onExit();
+    }
   }
+
+  success({required String message, bool exit = false, Function()? onExit,String? confirmButtonText, bool dismissible = true, Function()? onTap} ) async {
+    isShowing = true;
+    await showDialog(
+        barrierDismissible: dismissible,
+        context: context,
+        builder: (BuildContext context) {
+          return MessageDialog(message: message,onTap: onTap,);
+        }).then((value) {
+      isShowing = false;
+    });
+    if (exit) {
+      Navigator.pop(context);
+    }
+    if(onExit != null){
+      onExit();
+    }
+  }
+
+
+  error({required String message, bool exit = false, Function()? onExit,String? confirmButtonText, bool dismissible = true, Function()? onTap} ) async {
+    isShowing = true;
+    await showDialog(
+        barrierDismissible: dismissible,
+        context: context,
+        builder: (BuildContext context) {
+          return MessageDialog(message: message,onTap: onTap,);
+        }).then((value) {
+      isShowing = false;
+    });
+    if (exit) {
+      Navigator.pop(context);
+    }
+    if(onExit != null){
+      onExit();
+    }
+  }
+
 
 
 }
@@ -91,7 +141,8 @@ class LoadingDialog extends StatelessWidget {
 
 class MessageDialog extends StatelessWidget {
   final String message;
-  const MessageDialog({super.key, required this.message});
+  final Function()? onTap;
+  const MessageDialog({super.key, required this.message, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -100,21 +151,76 @@ class MessageDialog extends StatelessWidget {
           borderRadius:
           BorderRadius.circular(20.r)), //this right here
       child: Container(
-        height: 200.h,
+        // height: 200.h,
         child: Padding(
-          padding: EdgeInsets.all(12.w),
+          padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 30.h),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: message),
-              ),
+              Text(message,style: CustomTextStyle.semiBold12,),
+              SizedBox(height: 10.h,),
               ButtonPrimary(click: (){
+                Navigator.pop(context);
+                if(onTap != null){
+                  onTap!();
+                }
 
-              }, teks: "Test")
+              }, teks: "Ok")
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChoiceDialog extends StatelessWidget {
+  final String? confirmButtonText;
+  final String? cancelButtonText;
+  final String message;
+  final Function()? onTap;
+  const ChoiceDialog({super.key, required this.message, this.onTap, this.confirmButtonText, this.cancelButtonText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+          borderRadius:
+          BorderRadius.circular(20.r)), //this right here
+      child: Container(
+        // height: 200.h,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 30.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(message,style: CustomTextStyle.semiBold12,),
+              SizedBox(height: 10.h,),
+              Row(
+                children: [
+                  Expanded(
+                    child: ButtonPrimary(click: (){
+                      Navigator.pop(context);
+
+                    }, teks: cancelButtonText ?? "Batalkan",color: CustomColor.error500,),
+                  ),
+                  SizedBox(width: 10.w,),
+                  Expanded(
+                    child: ButtonPrimary(click: (){
+                      Navigator.pop(context);
+                      if(onTap != null){
+                        onTap!();
+                      }
+
+                    }, teks: confirmButtonText ?? "Ok"),
+                  ),
+                ],
+              ),
+
             ],
           ),
         ),

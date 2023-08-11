@@ -14,6 +14,7 @@ class DetailGameCubit extends Cubit<DetailGameState> {
   final GameRepo _repo = GameRepo();
 
   detailGame(int id) async {
+    /** Perlu menambahkan delay agar loading muncul */
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
         emit(DetailGameLoading());

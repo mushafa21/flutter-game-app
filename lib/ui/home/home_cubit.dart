@@ -14,6 +14,7 @@ class HomeCubit extends Cubit<HomeState> {
   final GameRepo _repo = GameRepo();
 
   getGame(int page) async {
+    /** Perlu menambahkan delay agar loading muncul */
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
         emit(HomeLoading());

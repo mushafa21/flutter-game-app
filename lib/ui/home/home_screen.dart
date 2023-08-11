@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../model/game_model.dart';
+import '../../utils/go.dart';
+import '../detail_game/detail_game_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -53,11 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
         listener: (context, state) {
           if(state is HomeLoading){
             isLoading = false;
-            dialog?.hideDialog();
+            dialog?.dismiss();
             dialog?.showLoading();
           } else if(state is HomeSuccess){
             isLoading = false;
-            dialog?.hideDialog();
+            dialog?.dismiss();
             if(page ==1){
               listGame = state.response.results ?? [];
 
@@ -70,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           } else if(state is HomeError){
             isLoading = false;
-            dialog?.hideDialog();
+            dialog?.dismiss();
             dialog?.error(message: state.error);
 
           }
@@ -84,7 +86,10 @@ class _HomeScreenState extends State<HomeScreen> {
               return ViewKosong();
             } else{
               return ListView.builder(itemBuilder: (context,index){
-                return GameItem(data: listGame[index]);
+                return InkWell(
+                    onTap: (){
+                      Go().move(context: context, target: DetailGameScreen(data: listGame[index]));
+                    },child: GameItem(data: listGame[index]));
               },physics: NeverScrollableScrollPhysics(),itemCount: listGame.length,shrinkWrap: true,);
             }
 
